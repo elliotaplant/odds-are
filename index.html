@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>Odds Are</title>
+    <style media="screen">
+      * {
+        box-sizing: border-box;
+      }
+
+      body, textarea, button {
+        font-family: "Courier New", Courier, "Lucida Sans Typewriter", "Lucida Typewriter", monospace;
+      }
+
+      body {
+        margin: 0 auto;
+        text-align: center;
+        width: 80%;
+        max-width: 1024px;
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+        height: min(100vh, 1600px);
+      }
+      button {
+        margin-top: 1em;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Odds Are</h1>
+    <p>Enter the challenge below</p>
+    <textarea id="challengeArea" rows="8" cols="80">Odds are you </textarea>
+    <button type="button" id="submitBtn">Submit</button>
+    <script type="text/javascript">
+      submitBtn.onclick = () => {
+        const url = 'https://odds-are.netlify.com/.netlify/functions/create';
+        const options = { method: 'POST', body: challengeArea.value };
+        return fetch(url, options).then(r => r.json()).then(console.log)
+      }
+      // Send request to lambda to create an odds row
+      //    then display the link to the created row
+    </script>
+  </body>
+</html>
