@@ -1,7 +1,7 @@
 const request = require('./request');
-const { AIRTABLE_API_KEY, PASTES_TABLE_ID } = process.env;
+const { AIRTABLE_API_KEY, TABLE_ID } = process.env;
 
-const API_ROOT = `https://api.airtable.com/v0/${PASTES_TABLE_ID}/Table%201`;
+const API_ROOT = `https://api.airtable.com/v0/${TABLE_ID}/Table%201`;
 const authHeader = { Authorization: `Bearer ${AIRTABLE_API_KEY}` };
 
 async function getOddsAre(challengeId) {
@@ -24,6 +24,6 @@ async function createOddsAre(challenge) {
 module.exports = {
   createOddsAre,
   getOddsAre,
-  setOddsAndTarget,
+  // setOddsAndTarget,
   // setGuess,
 };
