@@ -6,7 +6,7 @@ exports.handler = async (event) => {
   try {
     const response = await getChallenge(challengeId);
     if (response.statusCode === 200) {
-      return respondWith(200, JSON.stringify(response.body.records[0]));
+      return respondWith(200, JSON.stringify(response.body));
     }
     return respondWith(500, `Non 200 status code from database: ${response.statusCode}`);
   } catch (e) {
