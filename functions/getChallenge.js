@@ -7,18 +7,7 @@ function response(statusCode, body) {
 }
 
 exports.handler = async (event) => {
-  let challengeId;
-  console.log('event', event);
-  try {
-    // const requestBody = JSON.parse(event.body);
-    // if (!requestBody.challengeId) {
-    //   return response(400, 'No challengeId provided');
-    // }
-    // challengeId = requestBody.challengeId;
-    challengeId = 'recESK947CEBxFuFD';
-  } catch (e) {
-    return response(400, 'Non json body provided');
-  }
+  const challengeId = event.path.split('/').filter(Boolean).slice(-1);
   try {
     const response = await getChallenge(challengeId);
     if (response.statusCode === 200) {

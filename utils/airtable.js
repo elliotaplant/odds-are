@@ -6,7 +6,7 @@ const API_ROOT = `https://api.airtable.com/v0/${TABLE_ID}/${TABLE_NAME}`;
 const authHeader = { Authorization: `Bearer ${AIRTABLE_API_KEY}` };
 
 async function getChallenge(challengeId) {
-  const resp = await request('get', `${API_ROOT}?filterByFormula=id%3D${challengeId}`, authHeader);
+  const resp = await request('get', `${API_ROOT}/${challengeId}`, authHeader);
   console.log('resp.body', resp.body);
   return resp.body;
 }
