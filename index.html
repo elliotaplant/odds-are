@@ -34,7 +34,7 @@
     <button type="button" id="submitBtn">Submit</button>
     <script type="text/javascript">
       submitBtn.onclick = () => {
-        const url = 'https://odds-are.netlify.com/.netlify/functions/create';
+        const url = 'https://odds-are.netlify.app/.netlify/functions/create';
         const options = { method: 'POST', body: challengeArea.value };
         return fetch(url, options).then(r => r.json()).then(console.log)
       }
