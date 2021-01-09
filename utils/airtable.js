@@ -16,7 +16,7 @@ async function getOddsAre(challengeId) {
 }
 
 async function createOddsAre(challenge) {
-  return request('post', API_ROOT, authHeader, { records: [{ fields: { challenge } }] });
+  return request('post', API_ROOT, authHeader, { records: [{ fields: { challenge_description: challenge } }] });
 }
 
 // async function setOddsAndTarget(odds, target) {
