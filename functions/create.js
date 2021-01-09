@@ -5,12 +5,12 @@ const headers = { 'Access-Control-Allow-Origin': '*' };
 exports.handler = async (event) => {
   try {
     const response = await createOddsAre(event.body);
-    console.log('response', response);
+    console.log('response.body.records', response.body.records);
     if (response.statusCode === 200) {
       return {
         statusCode: 200,
         headers,
-        // body: response,
+        body: JSON.stringify(response.body.records[0]),
       };
     }
     return {
