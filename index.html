@@ -25,21 +25,45 @@
       button {
         margin-top: 1em;
       }
+      a {
+        display: block;
+      }
     </style>
   </head>
   <body>
     <h1>Odds Are</h1>
     <p>Enter the challenge below</p>
-    <textarea id="challengeArea" rows="8" cols="80">Odds are you </textarea>
-    <button type="button" id="submitBtn">Submit</button>
+    <div id="challengeArea">
+      <textarea id="challengeInput" rows="8" cols="80">Odds are you </textarea>
+      <button type="button" id="submitBtn">Submit</button>
+    </div>
+    <div id="linkArea" style="display: none">
+      <h3>Copy this link and send it to your mate</h3>
+      <a id="challengeLink"></a>
+      <button type="button" id="copyButton">Copy</button>
+    </div>
     <script type="text/javascript">
       submitBtn.onclick = () => {
         const url = 'https://odds-are.netlify.app/.netlify/functions/create';
-        const options = { method: 'POST', body: challengeArea.value };
-        return fetch(url, options).then(r => r.json()).then(console.log)
+        const options = { method: 'POST', body: challengeInput.value };
+        return fetch(url, options)
+          .then(r => r.json())
+          .then(setCreatedId)
       }
-      // Send request to lambda to create an odds row
-      //    then display the link to the created row
+
+      copyButton.onclick = () => {
+        window.copyToClipboard(challengeLink.href)
+        copyButton.innerText = 'Copied'
+        setTimeout(() => { copyButton.innerText = 'Copy'; }, 5000);
+      }
+
+      function setCreatedId({ id }) {
+        challengeArea.style.display = 'none';
+        linkArea.style.display = 'block';
+        challengeLink.href = 'odds-are.netlify.app/' + id;
+        challengeLink.innerText = 'odds-are.netlify.app/' + id;
+      }
     </script>
+    <script src="copyToClipboard.js"></script>
   </body>
 </html>
