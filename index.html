@@ -3,37 +3,13 @@
   <head>
     <meta charset="utf-8">
     <title>Odds Are</title>
-    <style media="screen">
-      * {
-        box-sizing: border-box;
-      }
-
-      body, textarea, button {
-        font-family: "Courier New", Courier, "Lucida Sans Typewriter", "Lucida Typewriter", monospace;
-      }
-
-      body {
-        margin: 0 auto;
-        text-align: center;
-        width: 80%;
-        max-width: 1024px;
-        display: flex;
-        align-items: center;
-        flex-direction: column;
-        height: min(100vh, 1600px);
-      }
-      button {
-        margin-top: 1em;
-      }
-      a {
-        display: block;
-      }
-    </style>
+    <link rel="stylesheet" href="style.css">
   </head>
   <body>
+
     <h1>Odds Are</h1>
-    <p>Enter the challenge below</p>
     <div id="challengeArea">
+      <h3>Enter the challenge below</h3>
       <textarea id="challengeInput" rows="8" cols="80">Odds are you </textarea>
       <button type="button" id="submitBtn">Submit</button>
     </div>
@@ -42,6 +18,7 @@
       <a id="challengeLink"></a>
       <button type="button" id="copyButton">Copy</button>
     </div>
+
     <script type="text/javascript">
       submitBtn.onclick = () => {
         const url = 'https://odds-are.netlify.app/.netlify/functions/create';
@@ -60,8 +37,8 @@
       function setCreatedId({ id }) {
         challengeArea.style.display = 'none';
         linkArea.style.display = 'block';
-        challengeLink.href = 'odds-are.netlify.app/' + id;
-        challengeLink.innerText = 'odds-are.netlify.app/' + id;
+        challengeLink.href = `${location.origin}/challenge#${id}`;
+        challengeLink.innerText = `${location.host}/challenge#${id}`;
       }
     </script>
     <script src="copyToClipboard.js"></script>

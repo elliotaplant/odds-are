@@ -1,10 +1,10 @@
-const { createOddsAre } = require('../utils/airtable');
+const { createChallenge } = require('../utils/airtable');
 
 const headers = { 'Access-Control-Allow-Origin': '*' };
 
 exports.handler = async (event) => {
   try {
-    const response = await createOddsAre(event.body);
+    const response = await createChallenge(event.body);
     console.log('response.body.records', response.body.records);
     if (response.statusCode === 200) {
       return {

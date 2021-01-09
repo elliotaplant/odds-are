@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>Odds Are</title>
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body>
+
+    <h1>Odds Are</h1>
+    <div id="challengeArea">
+      <h3 id="subTitle">Respond to your mate's challenge:</h3>
+      <p id="challengeDescriptionP"></p>
+      <button type="button" id="submitBtn">Submit</button>
+    </div>
+    <div id="linkArea" style="display: none">
+      <h3>Copy this link and send it to your mate</h3>
+      <a id="challengeLink"></a>
+      <button type="button" id="copyButton">Copy</button>
+    </div>
+
+    <script type="text/javascript">
+    const challengeId = location.hash.slice(1);
+    if (!challengeId) {
+      location.replace(location.origin);
+    } else {
+      const url = `https://odds-are.netlify.app/.netlify/functions/getChallenge/${challengeId}`;
+      fetch(url)
+        .then(response => response.body)
+        .then(console.log)
+    }
+    </script>
+  </body>
+</html>
