@@ -4,6 +4,7 @@ const { updateChallenge } = require('../utils/airtable');
 exports.handler = async (event) => {
   try {
     const response = await updateChallenge(event.body);
+    console.log('response', response);
     if (response.statusCode === 200) {
       return respondWith(200, JSON.stringify(response.body));
     }
