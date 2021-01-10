@@ -48,17 +48,16 @@
           alert('Your target can\'t be higher than the max value');
         } else {
           const url = 'https://odds-are.netlify.app/.netlify/functions/updateChallenge';
+          const { challenge_id, ...existingUpdatableFields } = window.challenge.fields;
           const options = {
             method: 'POST',
             body: JSON.stringify({
-              records: [{
-                id: window.challenge.id,
-                fields: {
-                  ...window.challenge.fields,
-                  max,
-                  target,
-                }
-              }]
+              id: window.challenge.id,
+              fields: {
+                ...existingUpdatableFields,
+                max,
+                target,
+              }
             }),
           };
           fetch(url, options).then(setCreatedId)

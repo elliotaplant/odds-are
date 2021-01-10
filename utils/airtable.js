@@ -14,7 +14,7 @@ async function createChallenge(challenge) {
 }
 
 async function updateChallenge(challenge) {
-  return request('post', API_ROOT, authHeader, { records: [{ fields: challenge }] });
+  return request('patch', API_ROOT, authHeader, { records: [challenge] });
 }
 
 module.exports = {
