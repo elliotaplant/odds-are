@@ -6,11 +6,24 @@ body, textarea, button {
   font-family: "Courier New", Courier, "Lucida Sans Typewriter", "Lucida Typewriter", monospace;
 }
 
+h1 {
+  font-size: 10vw;
+}
+
+h3, h4 {
+  font-size: 4vw;
+}
+
+textarea {
+  width: 100%;
+  font-size: 2vw;
+  height: 10vw;
+}
+
 body {
   margin: 0 auto;
   text-align: center;
-  width: 80%;
-  max-width: 1024px;
+  width: 90%;
   display: flex;
   align-items: center;
   flex-direction: column;
