@@ -11,6 +11,12 @@
     <div id="challengeArea">
       <h3 id="subTitle">Respond to your mate's challenge:</h3>
       <p id="challengeDescriptionP"></p>
+    </div>
+    <div id="responseArea" style="display: none">
+      <h4>Enter the maximum guess:</h4>
+      <input id="maxInput" type="number" min="1" required />
+      <h4>Enter the target (your mate won't see this):</h4>
+      <input id="targetInput" type="number" min="1" required />
       <button type="button" id="submitBtn">Submit</button>
     </div>
     <div id="linkArea" style="display: none">
@@ -24,10 +30,41 @@
     if (!challengeId) {
       location.replace(location.origin);
     } else {
-      const url = `https://odds-are.netlify.app/.netlify/functions/getChallenge/${challengeId}`;
-      fetch(url)
-        .then(response => response.body)
-        .then(console.log)
+      fetch(`https://odds-are.netlify.app/.netlify/functions/getChallenge/${challengeId}`)
+        .then(response => response.json())
+        .then((challenge) => {
+          window.challenge = challenge;
+          challengeDescriptionP.innerText = challenge.fields.challenge_description;
+          responseArea.style.display = 'block';
+        })
+        .catch(console.error)
+
+      submitBtn.onclick = () => {
+        const max = Number(maxInput.value);
+        const target = Number(targetInput.value);
+        if (!max || !target) {
+          alert('Max value and target are required');
+        } else if (target > max) {
+          alert('Your target can\'t be higher than the max value');
+        } else {
+          const url = 'https://odds-are.netlify.app/.netlify/functions/updateChallenge';
+          const options = { method: 'POST', body: JSON.stringify({ ...window.challenge, max, target }) };
+          fetch(url, options).then(setCreatedId)
+        }
+      }
+
+      copyButton.onclick = () => {
+        window.copyToClipboard(challengeLink.href)
+        copyButton.innerText = 'Copied'
+        setTimeout(() => { copyButton.innerText = 'Copy'; }, 5000);
+      }
+
+      function setCreatedId({ id }) {
+        responseArea.style.display = 'none';
+        linkArea.style.display = 'block';
+        challengeLink.href = `${location.origin}/guess#${id}`;
+        challengeLink.innerText = `${location.host}/guess#${id}`;
+      }
     }
     </script>
   </body>

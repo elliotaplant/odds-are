@@ -13,13 +13,12 @@ async function createChallenge(challenge) {
   return request('post', API_ROOT, authHeader, { records: [{ fields: { challenge_description: challenge } }] });
 }
 
-// async function setOddsAndTarget(odds, target) {
-//   return request('post', API_ROOT, authHeader, { records: [{ fields: { challenge } }] });
-// }
+async function updateChallenge(challenge) {
+  return request('post', API_ROOT, authHeader, { records: [{ fields: challenge }] });
+}
 
 module.exports = {
   createChallenge,
   getChallenge,
-  // setOddsAndTarget,
-  // setGuess,
+  updateChallenge,
 };

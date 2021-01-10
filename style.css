@@ -16,9 +16,12 @@ body {
   flex-direction: column;
   height: min(100vh, 1600px);
 }
-button {
-  margin-top: 1em;
+
+button, input {
+  margin: 1em auto 0;
+  display: block;
 }
+
 a {
   display: block;
 }
