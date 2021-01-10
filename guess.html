@@ -9,19 +9,15 @@
 
     <h1>Odds Are</h1>
     <p id="challengeDescriptionP"></p>
-    <div id="responseArea" style="display: none">
-      <h3 id="subTitle">Respond to your mate's challenge:</h3>
-      <h4>Enter the maximum guess:</h4>
-      <input id="maxInput" type="number" min="1" required />
-      <h4>Enter the target (your mate won't see this):</h4>
-      <input id="targetInput" type="number" min="1" required />
+    <div id="oddsOutOfArea" style="display: none">
+      <h3 id="subTitle">Guess to your mate's number:</h3>
+      <p>Odds out of <span id="oddsOutOfSpan"></span></p>
+      <h4>What's your guess?</h4>
+      <input id="guessInput" type="number" min="1" required />
       <button type="button" id="submitBtn">Submit</button>
     </div>
-    <div id="alreadyAnsweredArea" style="display: none">
-      <h3>Looks like this challenge has already been responded to</h3>
-    </div>
     <div id="linkArea" style="display: none">
-      <h3>Copy this link and send it to your mate</h3>
+      <h3>Visit this link and send it to your mate to see if you got it right:</h3>
       <a id="challengeLink"></a>
       <button type="button" id="copyButton">Copy</button>
     </div>
@@ -35,28 +31,24 @@
         .then(response => response.json())
         .then((challenge) => {
           window.challenge = challenge;
-          if (challenge.fields.max && challenge.fields.target) {
-            alreadyAnsweredArea.style.display = 'block';
-            setCreatedId()
-          } else {
-            challengeDescriptionP.innerText = `"${challenge.fields.challenge_description}"`;
-            responseArea.style.display = 'block';
-          }
+          challengeDescriptionP.innerText = `"${challenge.fields.challenge_description}"`;
+          oddsOutOfSpan.innerText = challenge.fields.max;
+          oddsOutOfArea.style.display = 'block';
+          challengeDescriptionP.style.display = 'block';
         })
         .catch(console.error)
 
       submitBtn.onclick = () => {
-        const max = Number(maxInput.value);
-        const target = Number(targetInput.value);
-        if (!max || !target) {
-          alert('Max value and target are required');
-        } else if (target > max) {
+        const guess = Number(guessInput.value);
+        if (!guess || guess < 1) {
+          alert('Guess value and target are required');
+        } else if (guess > window.challenge.max) {
           alert('Your target can\'t be higher than the max value');
         } else {
           const url = 'https://odds-are.netlify.app/.netlify/functions/updateChallenge';
           const options = {
             method: 'POST',
-            body: JSON.stringify({ id: window.challenge.id, fields: { max, target } }),
+            body: JSON.stringify({ id: window.challenge.id, fields: { guess } }),
           };
           fetch(url, options).then(setCreatedId).catch(console.error);
         }
@@ -69,10 +61,10 @@
       }
 
       function setCreatedId() {
-        responseArea.style.display = 'none';
+        oddsOutOfArea.style.display = 'none';
         linkArea.style.display = 'block';
-        challengeLink.href = `${location.origin}/guess#${window.challenge.id}`;
-        challengeLink.innerText = `${location.host}/guess#${window.challenge.id}`;
+        challengeLink.href = `${location.origin}/final#${window.challenge.id}`;
+        challengeLink.innerText = `${location.host}/final#${window.challenge.id}`;
       }
     }
     </script>

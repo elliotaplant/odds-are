@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>Odds Are</title>
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body>
+
+    <h1>Odds Are</h1>
+    <p id="challengeDescriptionP"></p>
+    <div id="responseArea" style="display: none">
+      <h3 id="subTitle">Challengee's target: <span id="targetSpan"></span></h3>
+      <h3 id="subTitle">Challenger's  guess: <span id="guessSpan"></span></h3>
+      <p id="matchArea"></p>
+    </div>
+
+    <script type="text/javascript">
+    const challengeId = location.hash.slice(1);
+    if (!challengeId) {
+      location.replace(location.origin);
+    } else {
+      fetch(`https://odds-are.netlify.app/.netlify/functions/getChallenge/${challengeId}`)
+        .then(response => response.json())
+        .then((challenge) => {
+          responseArea.style.display = 'block';
+          challengeDescriptionP.style.display = 'block';
+          challengeDescriptionP.innerText = `"${challenge.fields.challenge_description}"`;
+          targetSpan.innerText = challenge.fields.target;
+          guessSpan.innerText = challenge.fields.guess;
+          if (challenge.fields.target === challenge.fields.guess) {
+            matchArea.innerText = 'It\'s a match! Looks like you\'ve gotta do it';
+          } else {
+            matchArea.innerText = 'Not a match! You got lucky this time';
+          }
+        })
+        .catch(console.error)
+    }
+    </script>
+  </body>
+</html>
