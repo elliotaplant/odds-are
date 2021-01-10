@@ -1,7 +1,7 @@
 const https = require('https');
 
 module.exports = function request(method, url, headers = {}, body = null) {
-  if (!['get', 'post', 'head', 'delete'].includes(method)) {
+  if (!['get', 'post', 'patch', 'head', 'delete'].includes(method)) {
     throw new Error(`Invalid method: ${method}`);
   }
 
@@ -13,7 +13,7 @@ module.exports = function request(method, url, headers = {}, body = null) {
     throw new Error(`Invalid url ${url}`);
   }
 
-  if (body && method !== 'post') {
+  if (body && !(['post', 'patch'].includes(method))) {
     throw new Error(
       `Invalid use of the body parameter while using the ${method.toUpperCase()} method.`
     );

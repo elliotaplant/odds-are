@@ -51,14 +51,7 @@
           const { challenge_id, ...existingUpdatableFields } = window.challenge.fields;
           const options = {
             method: 'POST',
-            body: JSON.stringify({
-              id: window.challenge.id,
-              fields: {
-                ...existingUpdatableFields,
-                max,
-                target,
-              }
-            }),
+            body: JSON.stringify({ id: window.challenge.id, fields: { max, target } }),
           };
           fetch(url, options).then(setCreatedId)
         }
