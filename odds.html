@@ -50,13 +50,16 @@
     const challengeId = location.hash.slice(1);
     const UPDATE_CHALLENGE_URL = 'https://odds-are.netlify.app/.netlify/functions/updateChallenge';
 
+    console.log('challengeId', challengeId);
     if (!challengeId) {
+      console.log('nah');
       location.replace(location.origin);
     } else {
       fetch(`https://odds-are.netlify.app/.netlify/functions/getChallenge/${challengeId}`)
         .then(response => response.json())
         .then((challenge) => {
 
+          console.log('challenge');
           if (challenge || !challenge.fields.description) {
             location.replace(location.origin);
             return
