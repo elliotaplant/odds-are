@@ -9,8 +9,8 @@ async function getChallenge(challengeId) {
   return await request('get', `${API_ROOT}/${challengeId}`, authHeader);
 }
 
-async function createChallenge(challenge) {
-  return request('post', API_ROOT, authHeader, { records: [{ fields: { challenge_description: challenge } }] });
+async function createChallenge(description) {
+  return request('post', API_ROOT, authHeader, { records: [{ fields: { description } }] });
 }
 
 async function updateChallenge(challenge) {
