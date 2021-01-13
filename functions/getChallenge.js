@@ -2,7 +2,7 @@ const respondWith = require('../utils/respondWith');
 const { getChallenge } = require('../utils/airtable');
 
 exports.handler = async (event) => {
-  const challengeId = event.path.split('/').filter(Boolean).slice(-1);
+  const { challengeId } = event.queryStringParameters;
   try {
     const response = await getChallenge(challengeId);
     if (response.statusCode === 200) {
