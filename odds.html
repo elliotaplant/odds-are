@@ -48,18 +48,19 @@
 
     <script type="text/javascript">
     const challengeId = location.hash.slice(1);
-    const UPDATE_CHALLENGE_URL = 'https://odds-are.netlify.app/.netlify/functions/updateChallenge';
+    const BASE_API_URL = 'https://odds-are.netlify.app/.netlify/functions';
+    const GET_CHALLENGE_URL = BASE_API_URL + '/getChallenge';
+    const UPDATE_CHALLENGE_URL = BASE_API_URL + '/updateChallenge';
 
     console.log('challengeId', challengeId);
     if (!challengeId) {
       console.log('nah');
       location.replace(location.origin);
     } else {
-      fetch(`https://odds-are.netlify.app/.netlify/functions/getChallenge/${challengeId}`)
-        .then(response => response.json())
+      getChallenge(challengeId)
         .then((challenge) => {
 
-          console.log('challenge');
+          console.log('challenge', challenge);
           if (challenge || !challenge.fields.description) {
             location.replace(location.origin);
             return
@@ -133,7 +134,11 @@
           method: 'POST',
           body: JSON.stringify({ id: window.challenge.id, fields }),
         };
-        fetch(UPDATE_CHALLENGE_URL, options).then(setCreatedId).catch(console.error);
+        fetch(BASE_API_URL + '/updateChallenge', options).then(setCreatedId).catch(console.error);
+      }
+
+      function getChallenge(challengeId) {
+        return fetch(BASE_API_URL + '/getChallenge?challengeId=' + challengeId).then(r => r.json());
       }
 
       function show(area) {
