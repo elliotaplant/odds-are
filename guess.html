@@ -3,24 +3,25 @@
   <head>
     <meta charset="utf-8">
     <title>Odds Are</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style.css">
   </head>
   <body>
 
-    <h1>Odds Are</h1>
-    <p id="challengeDescriptionP"></p>
+    <h1 id="challengeDescription"></h1>
     <div id="oddsOutOfArea" style="display: none">
       <h3 id="subTitle">Guess to your mate's number:</h3>
       <p>Odds out of <span id="oddsOutOfSpan"></span></p>
       <h4>What's your guess?</h4>
-      <input id="guessInput" type="number" min="1" required />
-      <button type="button" id="submitBtn">Submit</button>
+      <input id="guessInput" type="number" pattern="[0-9]*" min="1" required />
+      <button type="button" id="submitBtn">Send It</button>
     </div>
     <div id="linkArea" style="display: none">
       <h3>Visit this link and send it to your mate to see if you got it right:</h3>
       <a id="challengeLink"></a>
       <button type="button" id="copyButton">Copy</button>
     </div>
+    <footer>Made with love by <a style="display: inline" href="https://elliotplant.com">Elliot Plant</a></footer>
 
     <script type="text/javascript">
     const challengeId = location.hash.slice(1);
@@ -31,10 +32,10 @@
         .then(response => response.json())
         .then((challenge) => {
           window.challenge = challenge;
-          challengeDescriptionP.innerText = `"${challenge.fields.challenge_description}"`;
+          challengeDescription.innerText = challenge.fields.challenge_description;
           oddsOutOfSpan.innerText = challenge.fields.max;
           oddsOutOfArea.style.display = 'block';
-          challengeDescriptionP.style.display = 'block';
+          challengeDescription.style.display = 'block';
         })
         .catch(console.error)
 
@@ -42,7 +43,7 @@
         const guess = Number(guessInput.value);
         if (!guess || guess < 1) {
           alert('Guess value and target are required');
-        } else if (guess > window.challenge.max) {
+        } else if (guess > window.challenge.fields.max) {
           alert('Your target can\'t be higher than the max value');
         } else {
           const url = 'https://odds-are.netlify.app/.netlify/functions/updateChallenge';

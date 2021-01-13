@@ -3,19 +3,19 @@
   <head>
     <meta charset="utf-8">
     <title>Odds Are</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style.css">
   </head>
   <body>
 
-    <h1>Odds Are</h1>
-    <p id="challengeDescriptionP"></p>
+    <h1 id="challengeDescription"></h1>
     <div id="responseArea" style="display: none">
       <h3 id="subTitle">Respond to your mate's challenge:</h3>
       <h4>Enter the maximum guess:</h4>
-      <input id="maxInput" type="number" min="1" required />
+      <input id="maxInput" type="number" pattern="[0-9]*" min="1" required />
       <h4>Enter the target (your mate won't see this):</h4>
-      <input id="targetInput" type="number" min="1" required />
-      <button type="button" id="submitBtn">Submit</button>
+      <input id="targetInput" type="number" pattern="[0-9]*" min="1" required />
+      <button type="button" id="submitBtn">Send It</button>
     </div>
     <div id="alreadyAnsweredArea" style="display: none">
       <h3>Looks like this challenge has already been responded to</h3>
@@ -25,6 +25,7 @@
       <a id="challengeLink"></a>
       <button type="button" id="copyButton">Copy</button>
     </div>
+    <footer>Made with love by <a style="display: inline" href="https://elliotplant.com">Elliot Plant</a></footer>
 
     <script type="text/javascript">
     const challengeId = location.hash.slice(1);
@@ -39,7 +40,7 @@
             alreadyAnsweredArea.style.display = 'block';
             setCreatedId()
           } else {
-            challengeDescriptionP.innerText = `"${challenge.fields.challenge_description}"`;
+            challengeDescription.innerText = challenge.fields.challenge_description;
             responseArea.style.display = 'block';
           }
         })

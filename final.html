@@ -3,17 +3,19 @@
   <head>
     <meta charset="utf-8">
     <title>Odds Are</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style.css">
   </head>
   <body>
 
-    <h1>Odds Are</h1>
-    <p id="challengeDescriptionP"></p>
+    <h1 id="challengeDescription"></h1>
     <div id="responseArea" style="display: none">
-      <h3 id="subTitle">Challengee's target: <span id="targetSpan"></span></h3>
-      <h3 id="subTitle">Challenger's  guess: <span id="guessSpan"></span></h3>
-      <p id="matchArea"></p>
+      <p id="subTitle">Challengee: <b id="targetSpan"></b></p>
+      <p id="subTitle">Challenger: <b id="guessSpan"></b></p>
+      <h3 id="matchArea"></h3>
+      <a href="/">Start Over</a>
     </div>
+    <footer>Made with love by <a style="display: inline" href="https://elliotplant.com">Elliot Plant</a></footer>
 
     <script type="text/javascript">
     const challengeId = location.hash.slice(1);
@@ -24,14 +26,14 @@
         .then(response => response.json())
         .then((challenge) => {
           responseArea.style.display = 'block';
-          challengeDescriptionP.style.display = 'block';
-          challengeDescriptionP.innerText = `"${challenge.fields.challenge_description}"`;
+          challengeDescription.style.display = 'block';
+          challengeDescription.innerText = challenge.fields.challenge_description;
           targetSpan.innerText = challenge.fields.target;
           guessSpan.innerText = challenge.fields.guess;
           if (challenge.fields.target === challenge.fields.guess) {
-            matchArea.innerText = 'It\'s a match! Looks like you\'ve gotta do it';
+            matchArea.innerText = 'It\'s a match!';
           } else {
-            matchArea.innerText = 'Not a match! You got lucky this time';
+            matchArea.innerText = 'Not a match!';
           }
         })
         .catch(console.error)
