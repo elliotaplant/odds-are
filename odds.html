@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>Odds Are</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" type="image/png" href="favicon.png">
+  </head>
+  <body>
+
+    <h1 id="description"></h1>
+
+    <!-- Initial response -->
+    <div id="responseArea" style="display: none">
+      <h3 id="subTitle">Respond to your mate's challenge:</h3>
+      <h4>Enter the maximum guess:</h4>
+      <input id="maxInput" type="number" pattern="[0-9]*" min="1" required />
+      <h4>Enter the target (your mate won't see this):</h4>
+      <input id="targetInput" type="number" pattern="[0-9]*" min="1" required />
+      <button type="button" id="responseSubmitBtn">Send It</button>
+    </div>
+
+    <!-- Guess response -->
+    <div id="guessArea" style="display: none">
+      <h3 id="subTitle">Guess to your mate's number (max <span id="oddsOutOfSpan"></span>):</h3>
+      <h4>What's your guess?</h4>
+      <input id="guessInput" type="number" pattern="[0-9]*" min="1" required />
+      <button type="button" id="guessSubmitBtn">Send It</button>
+    </div>
+
+    <!-- Final area -->
+    <div id="responseArea" style="display: none">
+      <p id="subTitle">Challengee: <b id="targetSpan"></b></p>
+      <p id="subTitle">Challenger: <b id="guessSpan"></b></p>
+      <h3 id="matchArea"></h3>
+      <a href="/">Start Over</a>
+    </div>
+
+    <!-- Copy link -->
+    <div id="linkArea" style="display: none">
+      <h3>Copy this link and send it to your mate</h3>
+      <a id="challengeLink"></a>
+      <button type="button" id="copyButton">Copy</button>
+    </div>
+
+    <footer>Made with love by <a style="display: inline" href="https://elliotplant.com">Elliot Plant</a></footer>
+
+    <script type="text/javascript">
+    const challengeId = location.hash.slice(1);
+    const BASE_API_URL = 'https://odds-are.netlify.app/.netlify/functions';
+    const GET_CHALLENGE_URL = BASE_API_URL + '/getChallenge';
+    const UPDATE_CHALLENGE_URL = BASE_API_URL + '/updateChallenge';
+
+    console.log('challengeId', challengeId);
+    if (!challengeId) {
+      console.log('nah');
+      location.replace(location.origin);
+    } else {
+      getChallenge(challengeId)
+        .then((challenge) => {
+
+          console.log('challenge', challenge);
+          if (challenge || !challenge.fields.description) {
+            location.replace(location.origin);
+            return
+          }
+
+          window.challenge = challenge;
+          initDisplay(challenge.fields)
+        })
+        .catch(console.error)
+
+      responseSubmitBtn.onclick = () => {
+        const max = Number(maxInput.value);
+        const target = Number(targetInput.value);
+        if (!max || !target) {
+          alert('Max value and target are required');
+          return;
+        } else if (target > max) {
+          alert('Your target can\'t be higher than the max value');
+          return;
+        } else {
+          updateChallenge({ max, target })
+        }
+      }
+
+      guessSubmitBtn.onclick = () => {
+        const guess = Number(guessInput.value);
+        if (!guess || guess < 1) {
+          alert('Guess value and target are required');
+        } else if (guess > window.challenge.fields.max) {
+          alert('Your target can\'t be higher than the max value');
+        } else {
+          updateChallenge({ guess })
+            .then(() => {
+              window.challenge.fields.guess = guess;
+              initDisplay(window.challenge.fields)
+            })
+        }
+      }
+
+      copyButton.onclick = () => {
+        window.copyToClipboard(challengeLink.href)
+        copyButton.innerText = 'Copied'
+        setTimeout(() => { copyButton.innerText = 'Copy'; }, 5000);
+      }
+
+      function setCreatedId() {
+        responseArea.style.display = 'none';
+        linkArea.style.display = 'block';
+        challengeLink.href = `${location.origin}/odds#${window.challenge.id}`;
+        challengeLink.innerText = `${location.host}/odds#${window.challenge.id}`;
+      }
+
+      function initDisplay({ description, max, target, guess }) {
+        description.innerText = description;
+        oddsOutOfSpan.innerText = max;
+        targetSpan.innerText = target;
+        guessSpan.innerText = guess;
+        matchArea.innerText = target === guess ? 'It\'s a match!' : 'Not a match!';
+
+        if (!max || !target) {
+          show(responseArea)
+        } else if (!guess){
+          show(guessArea)
+        } else {
+          show(finalArea)
+        }
+      }
+
+      function updateChallenge(fields) {
+        const options = {
+          method: 'POST',
+          body: JSON.stringify({ id: window.challenge.id, fields }),
+        };
+        fetch(BASE_API_URL + '/updateChallenge', options).then(setCreatedId).catch(console.error);
+      }
+
+      function getChallenge(challengeId) {
+        return fetch(BASE_API_URL + '/getChallenge?challengeId=' + challengeId).then(r => r.json());
+      }
+
+      function show(area) {
+        area.style.display = 'block';
+      }
+
+      function hide(area) {
+        area.style.display = 'none';
+      }
+    }
+    </script>
+    <script src="copyToClipboard.js"></script>
+  </body>
+</html>

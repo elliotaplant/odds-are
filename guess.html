@@ -33,7 +33,7 @@
         .then(response => response.json())
         .then((challenge) => {
           window.challenge = challenge;
-          challengeDescription.innerText = challenge.fields.challenge_description;
+          challengeDescription.innerText = challenge.fields.challenge;
           oddsOutOfSpan.innerText = challenge.fields.max;
           oddsOutOfArea.style.display = 'block';
           challengeDescription.style.display = 'block';

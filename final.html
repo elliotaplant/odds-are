@@ -28,7 +28,7 @@
         .then((challenge) => {
           responseArea.style.display = 'block';
           challengeDescription.style.display = 'block';
-          challengeDescription.innerText = challenge.fields.challenge_description;
+          challengeDescription.innerText = challenge.fields.challenge;
           targetSpan.innerText = challenge.fields.target;
           guessSpan.innerText = challenge.fields.guess;
           if (challenge.fields.target === challenge.fields.guess) {

@@ -11,7 +11,7 @@
 
     <h1>Odds Are</h1>
     <div id="challengeArea">
-      <h3>Enter the challenge below</h3>
+      <h4>Enter the challenge below</h4>
       <textarea id="challengeInput">Odds are you </textarea>
       <button type="button" id="submitBtn">Send It</button>
     </div>
@@ -20,7 +20,7 @@
       <a id="challengeLink"></a>
       <button type="button" id="copyButton">Copy</button>
     </div>
-    <footer>Made with love by <a style="display: inline" href="https://elliotplant.com">Elliot Plant</a></footer>
+    <footer>Made by <a style="display: inline" href="https://elliotplant.com">Elliot Plant</a></footer>
 
     <script type="text/javascript">
       submitBtn.onclick = () => {
@@ -40,8 +40,8 @@
       function setCreatedId({ id }) {
         challengeArea.style.display = 'none';
         linkArea.style.display = 'block';
-        challengeLink.href = `${location.origin}/challenge#${id}`;
-        challengeLink.innerText = `${location.host}/challenge#${id}`;
+        challengeLink.href = `${location.origin}/odds#${id}`;
+        challengeLink.innerText = `${location.host}/odds#${id}`;
       }
     </script>
     <script src="copyToClipboard.js"></script>
