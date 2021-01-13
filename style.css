@@ -66,9 +66,12 @@ button:hover, button:focus {
   cursor: pointer;
 }
 
+a {
+  font-size: 1.5em;
+}
+
 a#challengeLink {
   display: block;
-  font-size: 1.5em;
   word-wrap: break-word;
   word-break: break-all;
 }

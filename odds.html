@@ -9,7 +9,7 @@
   </head>
   <body>
 
-    <h1 id="description"></h1>
+    <h1 id="descriptionHeader"></h1>
 
     <!-- Initial response -->
     <div id="responseArea" style="display: none">
@@ -30,11 +30,11 @@
     </div>
 
     <!-- Final area -->
-    <div id="responseArea" style="display: none">
+    <div id="finalArea" style="display: none">
       <p id="subTitle">Challengee: <b id="targetSpan"></b></p>
       <p id="subTitle">Challenger: <b id="guessSpan"></b></p>
       <h3 id="matchArea"></h3>
-      <a href="/">Start Over</a>
+      <a id="startOver" href="/">Start Over</a>
     </div>
 
     <!-- Copy link -->
@@ -44,7 +44,7 @@
       <button type="button" id="copyButton">Copy</button>
     </div>
 
-    <footer>Made with love by <a style="display: inline" href="https://elliotplant.com">Elliot Plant</a></footer>
+    <footer>Made by <a style="display: inline" href="https://elliotplant.com">Elliot Plant</a></footer>
 
     <script type="text/javascript">
     const challengeId = location.hash.slice(1);
@@ -59,15 +59,12 @@
     } else {
       getChallenge(challengeId)
         .then((challenge) => {
-
-          console.log('challenge', challenge);
-          if (challenge || !challenge.fields.description) {
+          if (!challenge || !challenge.fields.description) {
             location.replace(location.origin);
-            return
+          } else {
+            window.challenge = challenge;
+            initDisplay(challenge.fields)
           }
-
-          window.challenge = challenge;
-          initDisplay(challenge.fields)
         })
         .catch(console.error)
 
@@ -81,7 +78,7 @@
           alert('Your target can\'t be higher than the max value');
           return;
         } else {
-          updateChallenge({ max, target })
+          updateChallenge({ max, target }).catch(console.error);
         }
       }
 
@@ -97,6 +94,7 @@
               window.challenge.fields.guess = guess;
               initDisplay(window.challenge.fields)
             })
+            .catch(console.error);
         }
       }
 
@@ -107,18 +105,24 @@
       }
 
       function setCreatedId() {
-        responseArea.style.display = 'none';
-        linkArea.style.display = 'block';
-        challengeLink.href = `${location.origin}/odds#${window.challenge.id}`;
-        challengeLink.innerText = `${location.host}/odds#${window.challenge.id}`;
+        hide(guessArea);
+        hide(responseArea);
+        hide(finalArea);
+        show(linkArea);
       }
 
       function initDisplay({ description, max, target, guess }) {
-        description.innerText = description;
+        descriptionHeader.innerText = description;
         oddsOutOfSpan.innerText = max;
         targetSpan.innerText = target;
         guessSpan.innerText = guess;
         matchArea.innerText = target === guess ? 'It\'s a match!' : 'Not a match!';
+        challengeLink.href = `${location.origin}/odds#${window.challenge.id}`;
+        challengeLink.innerText = `${location.host}/odds#${window.challenge.id}`;
+
+        hide(guessArea);
+        hide(responseArea);
+        hide(finalArea);
 
         if (!max || !target) {
           show(responseArea)
@@ -134,7 +138,7 @@
           method: 'POST',
           body: JSON.stringify({ id: window.challenge.id, fields }),
         };
-        fetch(BASE_API_URL + '/updateChallenge', options).then(setCreatedId).catch(console.error);
+        return fetch(BASE_API_URL + '/updateChallenge', options).then(setCreatedId);
       }
 
       function getChallenge(challengeId) {
