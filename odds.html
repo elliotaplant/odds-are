@@ -117,8 +117,8 @@
         targetSpan.innerText = target;
         guessSpan.innerText = guess;
         matchArea.innerText = target === guess ? 'It\'s a match!' : 'Not a match!';
-        challengeLink.href = `${location.origin}/odds#${window.challenge.id}`;
         challengeLink.innerText = `${location.host}/odds#${window.challenge.id}`;
+        challengeLink.href = challengeLink.innerText;
 
         hide(guessArea);
         hide(responseArea);

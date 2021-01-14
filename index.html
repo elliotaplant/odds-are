@@ -40,8 +40,8 @@
       function setCreatedId({ id }) {
         challengeArea.style.display = 'none';
         linkArea.style.display = 'block';
-        challengeLink.href = `${location.origin}/odds#${id}`;
         challengeLink.innerText = `${location.host}/odds#${id}`;
+        challengeLink.href = challengeLink.innerText;
       }
     </script>
     <script src="copyToClipboard.js"></script>
