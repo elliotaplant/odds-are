@@ -41,7 +41,7 @@
         challengeArea.style.display = 'none';
         linkArea.style.display = 'block';
         challengeLink.innerText = `${location.host}/odds#${id}`;
-        challengeLink.href = challengeLink.innerText;
+        challengeLink.href = `${location.origin}/odds#${id}`;
       }
     </script>
     <script src="copyToClipboard.js"></script>
